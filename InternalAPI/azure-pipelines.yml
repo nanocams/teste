@@ -1,0 +1,16 @@
+#
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - InternalAPI/**
+    - azure-pipelines-template.yml
+
+extends:
+  template: ../azure-pipelines-template.yml
+  parameters:
+    servicePath: 'InternalAPI'
+    imageName: 'ac-capp-internal-api'
+    containerAppName: 'ac-capp-internal-api'

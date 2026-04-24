@@ -1,0 +1,35 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+    - dev
+  paths:
+    include:
+    - InternalAPI
+ 
+pool:
+  vmImage: 'ubuntu-latest'
+ 
+variables:
+  buildConfiguration: 'Release'
+  functionProject: 'InternalAPI/InternalAPI.csproj'
+  azureSubscription: 'CG-PT-FS-Lab-Azure-Service-Connection'  # Nome da conexão de serviço
+  functionAppName: 'GetStockList'  # Nome da Azure Function App
+ 
+steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '8.x'
+ 
+- script: dotnet restore $(functionProject)
+  displayName: '🔄 Restaurar dependências'
+ 
+- script: dotnet build $(functionProject) --configuration $(buildConfiguration)
+  displayName: '🛠️ Compilar Azure Function'
+ 
+## deployment to the container

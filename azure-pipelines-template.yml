@@ -1,0 +1,56 @@
+# Template reutilizável para build + deploy de Azure Container Apps
+# Compatível com extends
+# Build rápido (ACR cache) + Deploy rápido (containerapp update)
+
+parameters:
+- name: servicePath
+  type: string
+
+- name: imageName
+  type: string
+
+- name: containerAppName
+  type: string
+
+jobs:
+- job: BuildAndDeploy
+  displayName: Build and Deploy Container App
+
+  pool:
+    vmImage: 'ubuntu-latest'
+
+  variables:
+    RESOURCE_GROUP: 'MicroServicesRG.AC'
+    ACR_NAME: 'ac7registry'
+
+  steps:
+  # ---------- BUILD ----------
+  - task: AzureCLI@2
+    displayName: 'Build image in ACR (cached)'
+    inputs:
+      azureSubscription: 'CG-PT-FS-Lab-Azure-Service-Connection'
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        echo "🔧 Building image ${{ parameters.imageName }}"
+
+        az acr build \
+          --registry $(ACR_NAME) \
+          --image ${{ parameters.imageName }}:$(Build.BuildId) \
+          ${{ parameters.servicePath }}
+
+  # ---------- DEPLOY ----------
+  - task: AzureCLI@2
+    displayName: 'Deploy to Azure Container App'
+    inputs:
+      azureSubscription: 'CG-PT-FS-Lab-Azure-Service-Connection'
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        echo "🚀 Deploying to Container App ${{ parameters.containerAppName }}"
+
+        az containerapp update \
+          --name ${{ parameters.containerAppName }} \
+          --resource-group $(RESOURCE_GROUP) \
+          --image $(ACR_NAME).azurecr.io/${{ parameters.imageName }}:$(Build.BuildId)
+          --query             properties.configuration.ingress.fqdn

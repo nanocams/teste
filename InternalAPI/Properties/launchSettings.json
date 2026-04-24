@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "InternalAPI": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7213"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "containerRunArguments": "--init",
+      "httpPort": 33933,
+      "useSSL": false
+    }
+  }
+}

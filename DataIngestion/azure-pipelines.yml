@@ -1,0 +1,16 @@
+#
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - DataIngestion/**
+    - azure-pipelines-template.yml
+
+extends:
+  template: ../azure-pipelines-template.yml
+  parameters:
+    servicePath: 'DataIngestion'
+    imageName: 'ac-capp-data-ingestion'
+    containerAppName: 'ac-capp-data-ingestion'

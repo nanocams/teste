@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "Predictions": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7066"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "containerRunArguments": "--init",
+      "httpPort": 31952,
+      "useSSL": false
+    }
+  }
+}

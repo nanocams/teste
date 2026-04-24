@@ -1,0 +1,27 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger: none # nunca executa automaticamente -main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  AZURE_SUBSCRIPTION: 'CG-PT-FS-Lab-Azure-Service-Connection'  # Nome da conexão de serviço
+
+steps:
+
+# ------------------------------------------------------------
+# Login no Azure (feito automaticamente pela task)
+# ------------------------------------------------------------
+- task: AzureCLI@2
+  displayName: 'Run prepare.ps1 (Create Infrastructure)'
+  inputs:
+    azureSubscription: '$(AZURE_SUBSCRIPTION)'
+    scriptType: 'ps'
+    scriptLocation: 'scriptPath'
+    scriptPath: 'prepare.ps1'
+    workingDirectory: '$(Build.SourcesDirectory)'
+    addSpnToEnvironment: true

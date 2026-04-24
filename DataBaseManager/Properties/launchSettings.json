@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "DataBaseManager": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7003"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "containerRunArguments": "--init",
+      "httpPort": 32948,
+      "useSSL": false
+    }
+  }
+}
